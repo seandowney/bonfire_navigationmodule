@@ -49,20 +49,20 @@ if (!function_exists('show_navigation'))
 		$ci =& get_instance();
 		
 		$query = $ci->db->select('nav_group_id')->where('abbr',$abbrev)->get('navigation_group');
-		
+
 		if (!$query || $query->num_rows() == 0)
 		{
 			return;
 		}
-		
+
 		$group_details = $query->result();
-		
+
 		$ci->load->model('navigation/navigation_model');
-		
+
 		$group_links = $ci->navigation_model->load_group($group_details[0]->nav_group_id);
-		
+
 		list($output, $cur) = show_level($group_links, TRUE, $show_children, $attributes);
-		
+
 		return $output;
 
 	}
@@ -87,7 +87,7 @@ if (!function_exists('show_navigation'))
 		$has_current = FALSE;
 
 		$wrap        = ( isset( $attributes['wrap'] ) && ( $attributes['wrap'] == true ) ) ? true : false;
-		$act_class   = ( isset ( $attributes['active'] ) ? $attributes['active'] : 'current';
+		$act_class   = ( isset ( $attributes['active'] ) ? $attributes['active'] : 'current');
 		$output      = '<ul';
 
 		if ($top)
