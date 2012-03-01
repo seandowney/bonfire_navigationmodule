@@ -87,7 +87,7 @@ if (!function_exists('show_navigation'))
 		$has_current = FALSE;
 
 		$wrap        = ( isset( $attributes['wrap'] ) && ( $attributes['wrap'] == true ) ) ? true : false;
-		$act_class   = ( isset ( $attributes['active'] ) ? $attributes['active'] : 'current';
+		$act_class   = isset ( $attributes['active'] ) ? $attributes['active'] : 'current';
 		$output      = '<ul';
 
 		if ($top)
