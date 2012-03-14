@@ -25,21 +25,49 @@ class Content extends Admin_Controller {
 	 */
 	public function index()
 	{
-		$data = array();
-		$nav_items = $this->navigation_model->order_by('nav_group_id, parent_id, position')->find_all();
-		if (is_array($nav_items) && count($nav_items)) 
-		{
-			foreach($nav_items as $key => $record)
-			{
-				$data["records"][$record->nav_id] = $record;
-			}
-		}
-		$data["groups"] = $this->navigation_group_model->find_all('nav_group_id');
+	
+		$groups = $this->navigation_group_model->find_all();
+		Template::set('groups', $groups);
 
-		Assets::add_js($this->load->view('content/js', null, true), 'inline');
-		Template::set_view("content/index");
-		Template::set("data", $data);
-		Template::set("toolbar_title", "Manage Navigation");
+		$offset = $this->uri->segment(5);
+
+		$where = array();
+
+		// Filters
+		$filter = $this->input->get('filter');
+		switch($filter)
+		{
+			case 'group':
+				$where['navigation.nav_group_id'] = (int)$this->input->get('group_id');
+				break;
+			default:
+				break;
+		}
+
+		$this->load->helper('ui/ui');
+
+		$this->navigation_model->limit($this->limit, $offset)->where($where);
+		$this->navigation_model->select('*');
+
+		Template::set('records', $this->navigation_model->find_all());
+
+		// Pagination
+		$this->load->library('pagination');
+
+		$this->navigation_model->where($where);
+		$total_records = $this->navigation_model->count_all();
+
+		$this->pager['base_url'] = site_url(SITE_AREA .'/content/navigation/index');
+		$this->pager['total_rows'] = $total_records;
+		$this->pager['per_page'] = $this->limit;
+		$this->pager['uri_segment']	= 5;
+
+		$this->pagination->initialize($this->pager);
+
+		Template::set('current_url', current_url());
+		Template::set('filter', $filter);
+
+		Template::set('toolbar_title', lang('navigation_manage'));
 		Template::render();
 	}
 	
