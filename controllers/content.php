@@ -79,26 +79,28 @@ class Content extends Admin_Controller {
 		$this->auth->restrict('Navigation.Content.Create');
 
 		$nav_items = $this->navigation_model->order_by('nav_group_id, position')->find_all();
-		$data['parents'] = array();
-		$data['parents'][] = '';
+		$parents = array();
+		$parents[] = '';
 		if (is_array($nav_items) && count($nav_items)) 
 		{
 			foreach($nav_items as $key => $record)
 			{
-				$data['parents'][$record->nav_id] = $record->title;
+				$parents[$record->nav_id] = $record->title;
 			}
 		}
 
 		$groups = $this->navigation_group_model->find_all('nav_group_id');
-		$data['groups'] = array();
+		$groups = array();
 		if (is_array($groups) && count($groups))
 		{
 			foreach($groups as $group_id => $record)
 			{
-				$data['groups'][$group_id] = $record->title;
+				$groups[$group_id] = $record->title;
 			}
 		}
-		Template::set("data", $data);
+		Template::set("groups", $groups);
+		Template::set("parents", $parents);
+		//Template::set("data", $data);
 
 		if ($this->input->post('submit'))
 		{
@@ -146,20 +148,20 @@ class Content extends Admin_Controller {
 
 		$nav_record = $this->navigation_model->find($id);
 		$nav_items = $this->navigation_model->order_by('nav_group_id, position')->find_all_by('nav_group_id', $nav_record->nav_group_id);
-		$data['parents'][] = '';
+		$parents[] = '';
 		foreach($nav_items as $key => $record)
 		{
 			// remove the current link
 			if($id != $record->nav_id)
 			{
-				$data['parents'][$record->nav_id] = $record->title;
+				$parents[$record->nav_id] = $record->title;
 			}
 		}
 
 		$groups = $this->navigation_group_model->find_all('nav_group_id');
 		foreach($groups as $group_id => $record)
 		{
-			$data['groups'][$group_id] = $record->title;
+			$groups[$group_id] = $record->title;
 		}
 		Template::set("data", $data);
 
@@ -167,7 +169,6 @@ class Content extends Admin_Controller {
 	
 		Template::set('toolbar_title', lang("navigation_edit_heading"));
 		Template::set_view('content/form');
-		Template::set("toolbar_title", "Manage Navigation");
 		Template::render();		
 	}
 	

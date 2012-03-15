@@ -17,6 +17,7 @@ $lang['navigation_delete_record']			= 'Delete this Navigation Group';
 $lang['navigation_delete_confirm']			= 'Are you sure you want to delete this navigation group?';
 $lang['navigation_edit_heading']			= 'Edit Navigation Group';
 $lang['navigation_delete_record_confirm']	= 'Edit Navigation Group';
+$lang['navigation_group']					= 'Navigation Group';
 $lang['navigation_group_id']				= 'ID';
 $lang['navigation_group_title']				= 'Title';
 $lang['navigation_abbreviation']			= 'Abbreviation';

@@ -2,8 +2,7 @@
 	<h3><?php echo "Navigation"; ?></h3>
 
 	<ul class="nav nav-tabs" >
-		<li <?php echo $filter=='' ? 'class="active"' : ''; ?>><a href="<?php echo $current_url; ?>">All</a></li>
-
+		<li class="active">All</li>
 	</ul>
 
 	<?php echo form_open(current_url()) ;?>
