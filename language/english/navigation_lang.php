@@ -16,6 +16,7 @@ $lang['navigation_cancel']			= 'Cancel';
 $lang['navigation_delete_record']			= 'Delete this Navigation';
 $lang['navigation_delete_confirm']			= 'Are you sure you want to delete this navigation?';
 $lang['navigation_edit_heading']			= 'Edit Navigation';
+$lang['navigation_heading']			= 'Navigation';
 
 // fields
 $lang['navigation_title_label']			= 'Title';
