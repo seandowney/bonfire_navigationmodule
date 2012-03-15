@@ -34,9 +34,9 @@
 				<td>
 					<input type="checkbox" name="checked[]" value="<?php echo $record['nav_group_id'] ?>" />
 				</td>
-				<td><?php echo $record['nav_group_id'] ?></td>
-				<td><?php echo anchor(SITE_AREA.'/content/navigation/groups/edit/'. $record->nav_group_id, $record->title) ?></td>
-				<td><?php echo $record['abbr']; ?></td>
+				<td><?php echo $record->nav_id ?></td>
+				<td><?php echo anchor(SITE_AREA.'/content/navigation/groups/edit/'. $record->nav_id, $record->title) ?></td>
+				<td><?php echo $record->abbr; ?></td>
 			</tr>
 			<?php endforeach; ?>
 		<?php else: ?>
