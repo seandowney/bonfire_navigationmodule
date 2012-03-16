@@ -47,7 +47,7 @@ if (!function_exists('show_navigation'))
 	function show_navigation($abbrev, $show_children = TRUE, $attributes=array())
 	{
 		$ci =& get_instance();
-		
+
 		if ($ci->db->table_exists('navigation_group')) {
 			$query = $ci->db->select('nav_group_id')->where('abbr',$abbrev)->get('navigation_group');
 
