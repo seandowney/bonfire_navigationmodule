@@ -12,7 +12,7 @@
 			<?php foreach ($groups as $group) : ?>
 				<li>
 					<a href="<?php echo $current_url .'?filter=group&group_id='. $group->nav_group_id ?>">
-						<?php echo $group->group; ?>
+						<?php echo $group->title; ?>
 					</a>
 				</li>
 			<?php endforeach; ?>
@@ -43,28 +43,32 @@
 		</tr>
 		</tfoot>
 		<?php endif; ?>
-		<tbody>
 
+		<tbody>
 		<?php if (isset($records) && is_array($records) && count($records)) : ?>
 			<?php foreach ($records as $record) : ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="checked[]" value="<?php echo $record['nav_id'] ?>" />
+					<input type="checkbox" name="checked[]" value="<?php echo $record->nav_id ?>" />
 				</td>
-				<td><?php echo $record['nav_id'] ?></td>
+				<td><?php echo $record->nav_id ?></td>
 				<td><?php echo anchor(SITE_AREA.'/content/navigation/edit/'. $record->nav_id, $record->title) ?></td>
-				<td><?php echo $record['url']; ?></td>
-				<td><?php echo $groups[$record['nav_group_id']]->title; ?></td>
-				<td><?php echo $record->parent_id != 0 && isset($records[$record->parent_id]->title) ? $records[$record->parent_id]->title : '';?></td>
+				<td><?php echo $record->url; ?></td>
+				<td><?php echo $groups[$record->nav_group_id]->title; ?></td>
+				<td><?php echo $record->parent_id != 0 && isset($records[$record->parent_id]->title) ? $records[$record->parent_id]->title : ''; ?></td>
 			</tr>
 			<?php endforeach; ?>
 		<?php else: ?>
 			<tr>
-				<td colspan="6">No items were `found that match your selection.</td>
+				<td colspan="6">No items were found that match your selection.</td>
 			</tr>
 		<?php endif; ?>
 		</tbody>
 	</table>
+
+	<div class="well">
+		<?php echo $total_records." records found"; ?>
+	</div>
 	<?php echo form_close(); ?>
 
 	<?php echo $this->pagination->create_links(); ?>

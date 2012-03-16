@@ -39,6 +39,7 @@ class Content extends Admin_Controller {
 		{
 			case 'group':
 				$where['navigation.nav_group_id'] = (int)$this->input->get('group_id');
+				$this->navigation_model->where('nav_group_id',(int)$this->input->get('group_id'));
 				break;
 			default:
 				break;
@@ -56,6 +57,7 @@ class Content extends Admin_Controller {
 
 		$this->navigation_model->where($where);
 		$total_records = $this->navigation_model->count_all();
+		Template::set('total_records', $total_records);
 
 		$this->pager['base_url'] = site_url(SITE_AREA .'/content/navigation/index');
 		$this->pager['total_rows'] = $total_records;
@@ -66,6 +68,7 @@ class Content extends Admin_Controller {
 
 		Template::set('current_url', current_url());
 		Template::set('filter', $filter);
+		Template::set_view('navigation/content/index');
 
 		Template::set('toolbar_title', lang('navigation_manage'));
 		Template::render();
@@ -89,8 +92,8 @@ class Content extends Admin_Controller {
 			}
 		}
 
-		$groups = $this->navigation_group_model->find_all('nav_group_id');
-		$groups = array();
+		$groups = $this->navigation_group_model->find_all();
+		//$groups = array();
 		if (is_array($groups) && count($groups))
 		{
 			foreach($groups as $group_id => $record)
@@ -158,15 +161,17 @@ class Content extends Admin_Controller {
 			}
 		}
 
-		$groups = $this->navigation_group_model->find_all('nav_group_id');
+		$groups = $this->navigation_group_model->find_all();
 		foreach($groups as $group_id => $record)
 		{
 			$groups[$group_id] = $record->title;
 		}
-		Template::set("data", $data);
+		//Template::set("data", $data);
 
+		Template::set('groups', $groups);
+		Template::set('parents', $parents);
 		Template::set('navigation', $nav_record);
-	
+
 		Template::set('toolbar_title', lang("navigation_edit_heading"));
 		Template::set_view('content/form');
 		Template::render();		
