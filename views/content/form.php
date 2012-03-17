@@ -25,7 +25,7 @@ $id = isset($navigation['nav_id']) ? "/".$navigation['nav_id'] : '';
 
 	<div>
 			<?php echo form_label(lang('navigation_group_label'), 'nav_group_id'); ?> <span class="required">*</span>
-			<?php echo form_dropdown("nav_group_id", $groups, isset($navigation['nav_group_id']) ? $navigation['nav_group_id'] : '', array("id" => "nav_group_id"));?>
+			<?php echo form_multiselect("groups[]", $groups, isset($navigation['groups']) ? $navigation['groups'] : null, "id='groups'"); ?>
 			<p class="small indent"><?php echo lang('navigation_group_info'); ?></p>
 	</div>
 
