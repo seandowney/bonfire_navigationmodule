@@ -35,7 +35,16 @@ class Content extends Admin_Controller {
 			}
 		}
 		$data["groups"] = $this->navigation_group_model->find_all('nav_group_id');
-
+		
+		$data['groups_have_records'] = array();
+		foreach($data['records'] as $r)
+		{
+			foreach($r->groups as $g)
+			{
+				if (!in_array($g, $data['groups_have_records'])) $data['groups_have_records'][] = $g;
+			}
+		}
+		
 		Assets::add_js($this->load->view('content/js', null, true), 'inline');
 		Template::set_view("content/index");
 		Template::set("data", $data);
@@ -177,7 +186,7 @@ class Content extends Admin_Controller {
 
 		$this->form_validation->set_rules('title','Title','required|trim|xss_clean|max_length[30]');			
 		$this->form_validation->set_rules('url','URL','required|trim|xss_clean|max_length[150]');			
-		$this->form_validation->set_rules('nav_group_id','Group','required|trim|xss_clean|is_numeric|max_length[11]');			
+		$this->form_validation->set_rules('groups[]','Groups','required|trim|xss_clean|is_array');			
 		$this->form_validation->set_rules('parent_id','Parent','required|trim|xss_clean|is_numeric|max_length[11]');			
 		if ($this->form_validation->run() === false)
 		{

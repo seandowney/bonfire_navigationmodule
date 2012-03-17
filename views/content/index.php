@@ -12,7 +12,10 @@
 					<div class="list-item" data-id="<?php echo $record['nav_id']; ?>">
 						<p>
 							<b><?php echo $record['title']; ?></b><br/>
-							<span class="small">URL:<?php echo $record['url']; ?><br />GROUP:<?php echo $groups[$record['nav_group_id']]->title; ?></span>
+							<span class="small">URL:<?php echo $record['url']; ?><br />
+							GROUP:
+							<?php if (sizeof($record['groups'])==1): echo $groups[$record['groups'][0]]->title; ?>
+							<?php else: echo "Multiple"; endif;?></span>
 						</p>
 					</div>
 				<?php endforeach; ?>
@@ -41,17 +44,12 @@
 			<br />
 <?php if (isset($records) && is_array($records) && count($records)) : ?>
 			<h2>Navigation</h2>
-		<?php
-		$group = '';
-		foreach ($records as $record) : ?>
-			<?php if ( !empty($group) AND $group != $record->nav_group_id): ?>
-					</tbody>
-				</table>
-				</div>
-			<?php endif;?>
-			<?php if ($group != $record->nav_group_id): ?>
+			
+			<?php if (isset($groups_have_records) && is_array($groups_have_records) && count($groups_have_records)) :?>
+				<?php foreach($groups_have_records as $group): ?>
+				
 			<div>
-				<h3><?php echo $groups[$record->nav_group_id]->title;?></h3>
+				<h3><?php echo $groups[$group]->title;?></h3>
 				<table>
 					<thead>
 					<th>Title</th>
@@ -59,17 +57,25 @@
 					<th>Parent</th>
 					</thead>
 					<tbody class="sortable">
-			<?php endif;?>
-					<tr>
-					<td><?php echo form_hidden('action_to[]', $record->nav_id); ?><?php echo anchor(SITE_AREA.'/content/navigation/edit/'. $record->nav_id, $record->title, 'class="ajaxify"') ?></td>
-					<td><?php echo $record->url;?></td>
-					<td><?php echo $record->parent_id != 0 && isset($records[$record->parent_id]->title) ? $records[$record->parent_id]->title : '';?></td>
-					</tr>
-			<?php  $group = $record->nav_group_id; ?>
-		<?php endforeach; ?>
+					
+					<?php foreach($records as $record): ?>
+						<?php if(in_array($group, $record->groups)):?>
+						
+						<tr>
+							<td><?php echo form_hidden('action_to[]', $record->nav_id); ?><?php echo anchor(SITE_AREA.'/content/navigation/edit/'. $record->nav_id, $record->title, 'class="ajaxify"') ?></td>
+							<td><?php echo $record->url;?></td>
+							<td><?php echo $record->parent_id != 0 && isset($records[$record->parent_id]->title) ? $records[$record->parent_id]->title : '';?></td>
+						</tr>
+						
+						<?php endif;?>
+					<?php endforeach; ?>
+					
 					</tbody>
 				</table>
 				</div>
+				
+				<?php endforeach; ?>
+			<?php endif;?>
 <?php endif; ?>
 				
 		</div>	<!-- /ajax-content -->
