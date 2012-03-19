@@ -38,7 +38,7 @@
 		<tr>
 			<td colspan="6">
 				<?php echo lang('bf_with_selected') ?>
-				<input type="submit" name="delete" class="btn-danger" id="delete-me" value="<?php echo lang('bf_action_delete') ?>" onclick="return confirm('<?php echo lang('us_delete_record_confirm'); ?>')">
+				<input type="submit" name="submit" class="btn-danger" id="delete-me" value="<?php echo lang('bf_action_delete') ?>" onclick="return confirm('<?php echo lang('navigation_delete_confirm'); ?>')">
 			</td>
 		</tr>
 		</tfoot>
@@ -54,7 +54,12 @@
 				<td><?php echo $record->nav_id ?></td>
 				<td><?php echo anchor(SITE_AREA.'/content/navigation/edit/'. $record->nav_id, $record->title) ?></td>
 				<td><?php echo $record->url; ?></td>
-				<td><?php echo $groups[$record->nav_group_id]->title; ?></td>
+				<td><?php
+				foreach($groups as $group) {
+					if ($group->nav_group_id == $record->nav_group_id) {
+						echo $group->title;
+					}
+				} ?></td>
 				<td><?php echo $record->parent_id != 0 && isset($records[$record->parent_id]->title) ? $records[$record->parent_id]->title : ''; ?></td>
 			</tr>
 			<?php endforeach; ?>

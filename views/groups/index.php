@@ -2,7 +2,7 @@
 	<h3><?php echo "Navigation"; ?></h3>
 
 	<ul class="nav nav-tabs" >
-		<li class="active">All</li>
+		<li class="active"><a href="#">All</a></li>
 	</ul>
 
 	<?php echo form_open(current_url()) ;?>
@@ -21,7 +21,7 @@
 			<tr>
 				<td colspan="6">
 					<?php echo lang('bf_with_selected') ?>
-					<input type="submit" name="delete" class="btn-danger" id="delete-me" value="<?php echo lang('bf_action_delete') ?>" onclick="return confirm('<?php echo lang('navigation_delete_confirm'); ?>')">
+					<input type="submit" name="submit" class="btn-danger" id="delete-me" value="<?php echo lang('bf_action_delete') ?>" onclick="return confirm('<?php echo lang('navigation_delete_confirm'); ?>')">
 				</td>
 			</tr>
 		</tfoot>

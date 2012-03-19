@@ -31,6 +31,19 @@ class Content extends Admin_Controller {
 
 		$offset = $this->uri->segment(5);
 
+		// Do we have any actions?
+		if ($action = $this->input->post('submit'))
+		{
+			$checked = $this->input->post('checked');
+
+			switch(strtolower($action))
+			{
+				case 'delete':
+					$this->delete($checked);
+					break;
+			}
+		}
+
 		$where = array();
 
 		// Filters
@@ -122,9 +135,9 @@ class Content extends Admin_Controller {
 		Template::set('toolbar_title', lang("navigation_create_new_button"));
 		Template::render();
 	}
+
 	//--------------------------------------------------------------------
-	
-	
+
 	public function edit() 
 	{
 		$this->auth->restrict('Navigation.Content.Edit');
@@ -176,31 +189,61 @@ class Content extends Admin_Controller {
 		Template::set_view('content/form');
 		Template::render();		
 	}
-	
-			
-	public function delete() 
-	{	
-		$this->auth->restrict('Navigation.Content.Delete');
 
-		$id = $this->uri->segment(5);
-	
-		if (!empty($id))
-		{	
-			$this->navigation_model->update_parent($id, 0);
-			$this->navigation_model->un_parent_kids($id);
-			
-			if ($this->navigation_model->delete($id))
+	//--------------------------------------------------------------------
+
+	public function delete($navs)
+	{
+
+		if (empty($navs))
+		{
+			$nav_id = $this->uri->segment(5);
+
+			if(!empty($nav_id))
 			{
-				Template::set_message(lang("navigation_delete_success"), 'success');
-			} else
-			{
-				Template::set_message(lang("navigation_delete_failure") . $this->navigation_model->error, 'error');
+				$navs = array($nav_id);
 			}
 		}
-		
-		redirect(SITE_AREA.'/content/navigation');
+
+		if (!empty($navs))
+		{
+			$this->auth->restrict('Navigation.Content.Delete');
+
+			foreach ($navs as $nav_id)
+			{
+				$nav = $this->navigation_model->find($nav_id);
+
+				if (isset($nav))
+				{
+					$this->navigation_model->update_parent($nav_id, 0);
+					$this->navigation_model->un_parent_kids($nav_id);
+
+					if ($this->navigation_model->delete($nav_id))
+					{
+						Template::set_message(lang('navigation_delete_success'), 'success');
+					}
+					  else
+					{
+						Template::set_message(lang('navigation_delete_failure'). $this->navigation_model->error, 'error');
+					}
+				}
+				else
+				{
+					Template::set_message(lang('navigation_not_found'), 'error');
+
+				}
+			}
+		}
+		else
+		{
+			Template::set_message(lang('navigation_empty_list'), 'error');
+		}
+
+		redirect(SITE_AREA .'/content/navigation');
 	}
-		
+
+	//--------------------------------------------------------------------
+
 	public function save_navigation($type='insert', $id=0) 
 	{	
 		if ($type == 'insert')
@@ -247,7 +290,9 @@ class Content extends Admin_Controller {
 //		}
 		return $return;
 	}
-	
+
+	//--------------------------------------------------------------------
+
 	public function ajax_update_positions()
 	{
 		// Create an array containing the IDs
@@ -263,7 +308,5 @@ class Content extends Admin_Controller {
 			$this->navigation_model->update($id, $data);
 			++$pos;
 		}
-
 	}
-
 }
