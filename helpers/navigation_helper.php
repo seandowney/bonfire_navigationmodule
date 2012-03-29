@@ -65,7 +65,8 @@ if (!function_exists('show_navigation'))
 			list($output, $cur) = show_level($group_links, TRUE, $show_children, $attributes);
 
 			return $output;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
