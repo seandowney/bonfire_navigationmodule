@@ -1,4 +1,25 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/*
+	Copyright (c) 2011 Sean Downey
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+*/
 
 class Navigation_model extends BF_Model {
 
@@ -22,8 +43,6 @@ class Navigation_model extends BF_Model {
 		$this->db->where(array('nav_group_id' => $nav_group_id, 'parent_id' => "0"));
 		$group_links = $this->navigation_model->order_by('position, title')->find_all();
 
-		$has_current_link = false;
-			
 		// Loop through all links and add a "current_link" property to show if it is active
 		if( ! empty($group_links) )
 		{
@@ -31,12 +50,6 @@ class Navigation_model extends BF_Model {
 			{
 				$full_match 	= site_url($this->uri->uri_string()) == $link->url;
 				$segment1_match = site_url($this->uri->rsegment(1, '')) == $link->url;
-				
-				// Either the whole URI matches, or the first segment matches
-				if($link->current_link = $full_match || $segment1_match)
-				{
-					$has_current_link = true;
-				}
 				
 				//build a multidimensional array for submenus
 				if($link->has_kids > 0 AND $link->parent_id == 0)
@@ -59,15 +72,15 @@ class Navigation_model extends BF_Model {
 							}
 						}
 					}
-				}
-			}
-			
-		}
+				}//end if
+			}//end foreach
+		}//end if
 
 		// Assign it 
 	    return $group_links;
-	}
+	}//end load_group()
 
+	
 	/**
 	 * Get children
 	 *
@@ -84,7 +97,8 @@ class Navigation_model extends BF_Model {
 							->result();
 							
 		return $children;
-	}
+	}//end get_children()
+
 
 	/**
 	 * Update the current link's parent
@@ -115,7 +129,8 @@ class Navigation_model extends BF_Model {
 		}
 		
 		return $this->db->update('navigation', array('parent_id' => $parent_id), array('nav_id' => $id));
-	}
+	}//end update_parent()
+
 
 	/**
 	 * Remove the parent id from kids
@@ -136,5 +151,7 @@ class Navigation_model extends BF_Model {
 				$this->db->update('navigation', array('parent_id' => 0), array('nav_id' => $child->nav_id));
 			}
 		}
-	}
-}
+	}//end un_parent_kids()
+	
+	
+}//end class
