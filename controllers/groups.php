@@ -1,4 +1,25 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/*
+	Copyright (c) 2011 Sean Downey
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+*/
 
 class Groups extends Admin_Controller {
                
@@ -34,7 +55,9 @@ class Groups extends Admin_Controller {
 	
 	//--------------------------------------------------------------------
 	
-	
+	/**
+	 * Creates a new navigation group
+	 */
 	public function create() 
 	{
 		$this->auth->restrict('Navigation.Content.Create');
@@ -60,6 +83,9 @@ class Groups extends Admin_Controller {
 	//--------------------------------------------------------------------
 	
 	
+	/**
+	 * Edits a group
+	 */
 	public function edit() 
 	{
 		$this->auth->restrict('Navigation.Content.Edit');
@@ -92,7 +118,10 @@ class Groups extends Admin_Controller {
 		Template::render();
 	}
 	
-			
+	
+	/**
+	 * Deletes a group
+	 */
 	public function delete() 
 	{	
 		$this->auth->restrict('Navigation.Content.Delete');
@@ -106,7 +135,8 @@ class Groups extends Admin_Controller {
 				// delete the nav items in the group
 				$this->navigation_model->delete_where(array('nav_group_id' => $id));
 				Template::set_message(lang("navigation_delete_success"), 'success');
-			} else
+			}
+			else
 			{
 				Template::set_message(lang("navigation_delete_failure") . $this->navigation_group_model->error, 'error');
 			}
@@ -114,7 +144,16 @@ class Groups extends Admin_Controller {
 		
 		redirect(SITE_AREA.'/content/navigation/groups');
 	}
-		
+	
+	
+	/**
+	 * Save a group's details
+	 * 
+	 * @param string  $type The request type - either Insert or Update
+	 * @param integer $id ID of the group
+	 * 
+	 * @return boolean Successful save or not 
+	 */
 	public function save_navigation($type='insert', $id=0) 
 	{	
 			
@@ -132,12 +171,13 @@ class Groups extends Admin_Controller {
 			if (is_numeric($id))
 			{
 				$return = true;
-			} else
+			}
+			else
 			{
 				$return = false;
 			}
 		}
-		else if ($type == 'update')
+		elseif ($type == 'update')
 		{
 			$return = $this->navigation_group_model->update($id, $_POST);
 		}
