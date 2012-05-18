@@ -28,21 +28,9 @@
 			</div>
 		</div>
 
-		<div class="control-group <?php echo form_error('nav_group_id') ? 'error' : '' ?>">
-			<label class="control-label"><?php echo lang('navigation_group_label') ?></label>
-			<div class="controls">
-				<?php echo form_dropdown("nav_group_id", $groups, isset($navigation->nav_group_id) ? $navigation->nav_group_id : '', array("id" => "nav_group_id"));?>
-				<span class="help-inline"><?php if (form_error('nav_group_id')) echo form_error('nav_group_id'); else echo lang('navigation_group_label'); ?></span>
-			</div>
-		</div>
+		<?php echo form_dropdown("nav_group_id", $groups, isset($navigation->nav_group_id) ? $navigation->nav_group_id : '', lang('navigation_group_label'), array("id" => "nav_group_id"));?>
 
-		<div class="control-group <?php echo form_error('parent_id') ? 'error' : '' ?>">
-			<label class="control-label"><?php echo lang('navigation_parent_label') ?></label>
-			<div class="controls">
-				<?php echo form_dropdown("parent_id", $parents, isset($navigation->parent_id) ? $navigation->parent_id : '', array("id" => "parent_id"));?>
-				<span class="help-inline"><?php if (form_error('parent_id')) echo form_error('parent_id'); else echo lang('navigation_parent_info'); ?></span>
-			</div>
-		</div>
+		<?php echo form_dropdown("parent_id", $parents, isset($navigation->parent_id) ? $navigation->parent_id : '', lang('navigation_parent_label'), array("id" => "parent_id"));?>
 	
 	</fieldset>
 	
