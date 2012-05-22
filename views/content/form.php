@@ -28,10 +28,10 @@
 			</div>
 		</div>
 
-		<?php echo form_dropdown("nav_group_id", $groups, isset($navigation->nav_group_id) ? $navigation->nav_group_id : '', lang('navigation_group_label'), array("id" => "nav_group_id"));?>
+		<?php echo form_dropdown("nav_group_id", $groups, set_value('nav_group_id', isset($navigation->nav_group_id) ? $navigation->nav_group_id : ''), lang('navigation_group_label'), array("id" => "nav_group_id"));?>
 
-		<?php echo form_dropdown("parent_id", $parents, isset($navigation->parent_id) ? $navigation->parent_id : '', lang('navigation_parent_label'), array("id" => "parent_id"));?>
-	
+		<?php echo form_dropdown("parent_id", $parents, set_value('parent_id', isset($navigation->parent_id) ? $navigation->parent_id : ''), lang('navigation_parent_label'), array("id" => "parent_id"));?>
+
 	</fieldset>
 	
 	<div class="form-actions">

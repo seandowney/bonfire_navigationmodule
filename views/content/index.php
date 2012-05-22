@@ -3,7 +3,7 @@
 
 	<ul class="nav nav-tabs" >
 		<li <?php echo $filter=='' ? 'class="active"' : ''; ?>><a href="<?php echo $current_url; ?>">All</a></li>
-		<li <?php echo $filter=='group' ? 'class="active"' : ''; ?> class="dropdown">
+		<li class="<?php echo $filter=='group' ? 'active ' : ''; ?>dropdown">
 			<a href="#" class="drodown-toggle" data-toggle="dropdown">
 				By Group <?php echo isset($filter_group) ? ": $filter_group" : ''; ?>
 				<b class="caret light-caret"></b>

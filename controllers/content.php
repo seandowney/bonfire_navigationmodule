@@ -72,8 +72,18 @@ class Content extends Admin_Controller {
 		switch($filter)
 		{
 			case 'group':
-				$where['navigation.nav_group_id'] = (int)$this->input->get('group_id');
+				$group_id = (int)$this->input->get('group_id');
+				$where['navigation.nav_group_id'] = $group_id;
 				$this->navigation_model->where('nav_group_id',(int)$this->input->get('group_id'));
+
+				foreach ($groups as $group)
+				{
+					if ($group->nav_group_id == $group_id)
+					{
+						Template::set('filter_group', $group->title);
+						break;
+					}
+				}
 				break;
 			default:
 				break;
@@ -84,7 +94,15 @@ class Content extends Admin_Controller {
 		$this->navigation_model->limit($this->limit, $offset)->where($where);
 		$this->navigation_model->select('*');
 
-		Template::set('records', $this->navigation_model->find_all());
+		$nav_items = $this->navigation_model->order_by('nav_group_id, parent_id, position')->find_all();
+		if (is_array($nav_items) && count($nav_items))
+		{
+			foreach($nav_items as $record)
+			{
+				$records[$record->nav_id] = $record;
+			}
+		}
+		Template::set('records', $records);
 
 		// Pagination
 		$this->load->library('pagination');
@@ -127,15 +145,16 @@ class Content extends Admin_Controller {
 		}
 
 		$groups = $this->navigation_group_model->find_all();
-		//$groups = array();
+		$dropdown_groups = array();
 		if (is_array($groups) && count($groups))
 		{
-			foreach($groups as $group_id => $record)
+			foreach($groups as $record)
 			{
-				$groups[$group_id] = $record->title;
+				$dropdown_groups[$record->nav_group_id] = $record->title;
 			}
 		}
-		Template::set("groups", $groups);
+
+		Template::set("groups", $dropdown_groups);
 		Template::set("parents", $parents);
 		//Template::set("data", $data);
 
