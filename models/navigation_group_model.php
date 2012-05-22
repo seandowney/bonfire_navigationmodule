@@ -9,7 +9,7 @@ class Navigation_group_model extends BF_Model {
 	protected $set_created	= false;
 	protected $set_modified = false;
 
-	public function find_all($sort_field=null)
+	public function find_all($sort_field='nav_group_id')
 	{
 		$result_array = parent::find_all();
 		

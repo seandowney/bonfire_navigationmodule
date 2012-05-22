@@ -14,12 +14,15 @@ This is a simple Navigation Module for the Bonfire (http://cibonfire.com/) appli
 
 - Navigation Groups
 - Simple Helper to call from the theme template
-- Drag-drop Nav item order
 - Editable in the Content context inside Bonfire
 
 ## Changes
 - Added setting to wrap list items in a span for for css styling
 - Added setting to change the name of the current active class, defaults to current
+- Adding support for Bonfire 0.6 (Twitter Bootstrap) - major thanks to @jfox015 and @svizion
+
+## Know Issues
+- Drag and Drop ordering is not working in this version yet
 
 ## Helper
 
