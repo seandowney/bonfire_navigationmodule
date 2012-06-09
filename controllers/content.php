@@ -95,6 +95,7 @@ class Content extends Admin_Controller {
 		$this->navigation_model->select('*');
 
 		$nav_items = $this->navigation_model->order_by('nav_group_id, parent_id, position')->find_all();
+		$records = array();
 		if (is_array($nav_items) && count($nav_items))
 		{
 			foreach($nav_items as $record)
