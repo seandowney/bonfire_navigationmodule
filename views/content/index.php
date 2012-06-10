@@ -44,7 +44,7 @@
 		</tfoot>
 		<?php endif; ?>
 
-		<tbody>
+		<tbody<?php if(isset($filter_group)):?> class="sortable"<?php endif;?>>
 		<?php if (isset($records) && is_array($records) && count($records)) : ?>
 			<?php foreach ($records as $record) : ?>
 			<tr>

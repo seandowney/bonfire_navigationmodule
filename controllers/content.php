@@ -124,6 +124,10 @@ class Content extends Admin_Controller {
 		Template::set_view('navigation/content/index');
 
 		Template::set('toolbar_title', lang('navigation_manage'));
+
+		Assets::add_js('jquery-ui-1.8.13.min.js');
+		Assets::add_module_js('navigation', 'navigation');
+
 		Template::render();
 	}
 	
