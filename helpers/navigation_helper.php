@@ -28,23 +28,20 @@
 */
 
 
-/*
-	Function: show_navigation()
-	
-	Returns the navigation html for a given navigation group
-	
-	Parameters:
-		$abbrev			- Abbreviated name for the navigation group.
-		$show_children	- Whether to show the child menu items or not.
-		$attributes		- Array of attributes - used for id and class at the moment.
-		
-	Return:
-		A string with the full html for the navigation items. 
-*/
 if (!function_exists('show_navigation'))
 {
 
-	function show_navigation($abbrev, $show_children = TRUE, $attributes=array())
+	/**
+	 * Returns the navigation html for a given navigation group
+	 * 
+	 * @param string  $abbrev        Abbreviated name for the navigation group.
+	 * @param boolean $show_children Whether to show the child menu items or not.
+	 * @param array   $attributes    Array of attributes - used for id and class athe moment.
+	 * @param string  $selected      Menu option to set as the current
+	 * 
+	 * @return boolean A string with the full html for the navigation items. 
+	 */
+	function show_navigation($abbrev, $show_children = TRUE, $attributes=array(), $selected = '')
 	{
 		$ci =& get_instance();
 
@@ -62,7 +59,7 @@ if (!function_exists('show_navigation'))
 
 			$group_links = $ci->navigation_model->load_group($group_details[0]->nav_group_id);
 
-			list($output, $cur) = show_level($group_links, TRUE, $show_children, $attributes);
+			list($output, $cur) = show_level($group_links, TRUE, $show_children, $attributes, $selected);
 
 			return $output;
 		}
@@ -70,23 +67,22 @@ if (!function_exists('show_navigation'))
 			return false;
 		}
 	}
-	
-/*
-	Function: show_level()
-	
-	Returns the navigation html for a given navigation level and is used recursively.
-	
-	Parameters:
-		$links			    - Array of links to display.
-		$top			      - Whether this is the top level or not.
-		$show_children	- Whether to show the child menu items or not.
-		$attributes		  - Array of attributes - used for id and class, active class and wrapper at the moment.
-											Set wrap to true inside of attributes to output tags wrapped in spans
+}
 
-	Return:
-		A string with the full html for the navigation items. 
-*/
-	function show_level($links, $top=FALSE, $show_children = TRUE, $attributes=array())
+if (!function_exists('show_level'))
+{
+	/**
+	 * Returns the navigation html for a given navigation level and is used recursively.
+	 * 
+	 * @param array   $links         Array of links to display.
+	 * @param boolean $top           Whether this is the top level or not.
+	 * @param boolean $show_children Whether to show the child menu items or not.
+	 * @param array   $attributes    Array of attributes - used for id and class, active class and wrapper at the moment. Set wrap to true inside of attributes to output tags wrapped in spans
+	 * @param string  $selected      Menu option to set as the current
+	 * 
+	 * @return type A string with the full html for the navigation items. 
+	 */
+	function show_level($links, $top=FALSE, $show_children=TRUE, $attributes=array(), $selected = '')
 	{
 		$has_current = FALSE;
 
@@ -113,7 +109,7 @@ if (!function_exists('show_navigation'))
 				
 			}
 
-			if ("/".trim(uri_string(), '/') == $link->url || $child_current)
+			if ($selected == $link->url || "/".trim(uri_string(), '/') == $link->url || current_url() == $link->url || $child_current)
 			{
 				$attributes['class'] = $act_class;
 				$has_current = TRUE;

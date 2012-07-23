@@ -72,9 +72,9 @@ class Content extends Admin_Controller {
 		switch($filter)
 		{
 			case 'group':
-				$group_id = (int)$this->input->get('group_id');
+				$group_id = (int)xss_clean($this->input->get('group_id'));
 				$where['navigation.nav_group_id'] = $group_id;
-				$this->navigation_model->where('nav_group_id',(int)$this->input->get('group_id'));
+				$this->navigation_model->where('nav_group_id', $group_id);
 
 				foreach ($groups as $group)
 				{
